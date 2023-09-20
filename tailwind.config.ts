@@ -10,6 +10,7 @@ const config: Config = {
 	theme: {
 		fontFamily: {
 			sans: ['Poppins', ...DefaultTheme.fontFamily.sans],
+			heading: ['Martel Sans', ...DefaultTheme.fontFamily.sans],
 		},
 		extend: {
 			backgroundImage: {
@@ -18,7 +19,7 @@ const config: Config = {
 			},
 		},
 	},
-	plugins: [],
+	plugins: [require('@tailwindcss/typography')],
 };
 
 export default config;
