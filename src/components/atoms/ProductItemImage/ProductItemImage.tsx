@@ -1,17 +1,16 @@
 import Image from 'next/image';
-import { type ProductItemImageProps } from '@/components/atoms';
+import { type ProductItemImageProps } from '@components/atoms';
 
 export const ProductItemImage = (props: ProductItemImageProps) => {
-	const { src, alt } = props;
+	const { src, alt, className } = props;
 
 	return (
-		<div className="mb-10 aspect-square">
+		<div className={`aspect-square ${className}`}>
 			<Image
 				src={src}
 				alt={alt}
-				width={312}
-				height={312}
-				className="h-full w-full object-cover transition hover:scale-110"
+				className="h-full w-full object-cover transition hover:scale-105"
+				fill
 			/>
 		</div>
 	);

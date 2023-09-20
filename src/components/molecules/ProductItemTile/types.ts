@@ -1,11 +1,13 @@
+import {
+	type ProductItemPriceProps,
+	type ProductItemImageProps,
+	type ProductItemCategoryProps,
+} from '@components/atoms';
+
 export type ProductItemTileProps = {
-	id: number;
-	badge: string;
-	category: string;
+	id: string;
+	category: ProductItemCategoryProps['category'];
 	name: string;
-	price: number;
-	image: {
-		src: string;
-		alt: string;
-	};
+	price: ProductItemPriceProps['price'];
+	image: ProductItemImageProps;
 };

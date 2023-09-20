@@ -1,5 +1,5 @@
-import { type ProductItemsListProps } from '@/components/organisms';
-import { ProductItemTile } from '@/components/molecules';
+import { type ProductItemsListProps } from '@components/organisms';
+import { ProductItemTile } from '@components/molecules';
 
 export const ProductItemsList = (props: ProductItemsListProps) => {
 	const { products } = props;
