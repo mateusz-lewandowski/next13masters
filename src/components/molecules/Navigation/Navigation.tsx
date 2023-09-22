@@ -10,7 +10,7 @@ export const Navigation = (props: NavigationProps) => {
 				{menu.map((item, index) => {
 					return (
 						<li key={index} className="text-center">
-							<NavigationItemLink href={item.href} name={item.name} partialMatching={true} />
+							<NavigationItemLink href={item.href} name={item.name} exact={true} />
 						</li>
 					);
 				})}
