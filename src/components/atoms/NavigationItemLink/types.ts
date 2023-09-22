@@ -1,5 +1,7 @@
 export type NavigationItemLinkProps = {
 	name: string;
 	href: string;
-	partialMatching?: boolean;
+	className?: string;
+	activeClassName?: string;
+	exact?: boolean;
 };
