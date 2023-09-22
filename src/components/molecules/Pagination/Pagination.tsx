@@ -1,5 +1,5 @@
 import { NavigationItemLink } from '@/components/atoms';
-import { type PaginationProps } from '@components/organisms';
+import { type PaginationProps } from '@components/molecules';
 
 export const Pagination = (props: PaginationProps) => {
 	const { itemsPerPage, totalItems } = props;
