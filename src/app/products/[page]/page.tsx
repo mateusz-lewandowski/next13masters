@@ -1,7 +1,8 @@
 import { type Metadata } from 'next';
 import { type ProductsPageParams } from './type';
 import { getProducts } from '@api/products';
-import { Pagination, ProductItemsList } from '@components/organisms';
+import { ProductItemsList } from '@components/organisms';
+import { Pagination } from '@components/molecules';
 
 const itemsPerPage = 8;
 
