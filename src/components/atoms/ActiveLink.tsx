@@ -6,7 +6,7 @@ import Link from 'next/link';
 import clsx from 'clsx';
 import { usePathname } from 'next/navigation';
 
-export type ActiveLinkProps<T> = {
+export type ActiveLinkProps<T extends string> = {
 	name: string;
 	href: Route<T> | UrlObject;
 	exact?: boolean;

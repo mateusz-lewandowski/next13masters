@@ -1,11 +1,11 @@
 import { type Route } from 'next';
 import { ActiveLink, type ActiveLinkProps } from '@/components/atoms/ActiveLink';
 
-type NavigationProps<T> = {
-	menu: ActiveLinkProps<T>[];
+type NavigationProps = {
+	menu: ActiveLinkProps<Route>[];
 };
 
-export const Navigation = (props: NavigationProps<T>) => {
+export const Navigation = (props: NavigationProps) => {
 	const { menu } = props;
 
 	return (
@@ -14,7 +14,7 @@ export const Navigation = (props: NavigationProps<T>) => {
 				{menu.map((item, index) => {
 					return (
 						<li key={index} className="text-center">
-							<ActiveLink href={item.href as Route} name={item.name} />
+							<ActiveLink href={item.href} name={item.name} />
 						</li>
 					);
 				})}
