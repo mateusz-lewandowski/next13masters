@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
 	images: {
-		domains: ['naszsklep-api.vercel.app'],
+		domains: ['media.graphassets.com'],
 	},
 	experimental: {
 		typedRoutes: true,
@@ -11,6 +11,10 @@ const nextConfig = {
 			{
 				source: '/products',
 				destination: '/products/1',
+			},
+			{
+				source: '/categories/:slug',
+				destination: '/categories/:slug/1',
 			},
 		];
 	},

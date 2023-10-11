@@ -1,16 +1,25 @@
 import { type Metadata } from 'next';
-import { type ProductPageParams } from './type';
-import {
-	Heading,
-	ProductItemImage,
-	ProductItemCounter,
-	ProductItemPrice,
-	ProductItemCategory,
-} from '@components/atoms';
-import { getProducts, getProductById } from '@api/products';
+import { notFound } from 'next/navigation';
+import { getProductsList, getProductById } from '@/api/products';
+import { ProductItemImage } from '@/components/atoms/ProductItemImage';
+import { Heading } from '@/components/atoms/Heading';
+import { ProductItemCategory } from '@/components/atoms/ProductItemCategory';
+import { ProductItemCounter } from '@/components/atoms/ProductItemCounter';
+import { ProductItemPrice } from '@/components/atoms/ProductItemPrice';
+import { ProductItemsList } from '@/components/organisms/ProductItemsList';
+
+type ProductPageParams = {
+	params: {
+		productId: string;
+		page: string;
+	};
+};
 
 export async function generateMetadata({ params }: ProductPageParams): Promise<Metadata> {
-	const product = await getProductById(params.productId);
+	const { productId } = params;
+	const product = await getProductById({ productId });
+
+	if (!product) return notFound();
 
 	return {
 		title: `${product.name} - Next13masters`,
@@ -18,35 +27,38 @@ export async function generateMetadata({ params }: ProductPageParams): Promise<M
 	};
 }
 
-export async function generateStaticParams() {
-	const products = await getProducts();
+// export async function generateStaticParams() {
+// 	const { products } = await getProductsList({});
 
-	return products.map((product) => ({ productId: product.id }));
-}
+// 	return products.map((product) => ({ productId: product.id }));
+// }
 
 export default async function ProductPage({ params }: ProductPageParams) {
-	const product = await getProductById(params.productId);
+	const { productId } = params;
+	const product = await getProductById({ productId });
+	const { products: relatedProsucts } = await getProductsList({ first: 4 });
+
+	if (!product) return notFound();
 
 	return (
 		<>
-			<div className="from-white from-50% to-gray-100 to-50% md:bg-gradient-to-r">
-				<div className="container mx-auto px-4">
-					<div className="grid md:grid-cols-6">
-						<ProductItemImage
-							className="relative overflow-hidden md:col-span-3"
-							src={product.image.src}
-							alt={product.image.alt}
-						/>
-						<div className="grid content-start gap-8 py-8 md:col-span-2 md:col-end-7 md:content-center">
-							<Heading className="font-heading text-5xl" title={product.name} />
-							<ProductItemCategory className="text-gray-500" category={product.category} />
-							<ProductItemPrice className="font-semibold text-gray-950" price={product.price} />
-							<span>{product.description}</span>
-							<ProductItemCounter />
-						</div>
-					</div>
+			<div className="container mx-auto grid gap-8 px-4 md:grid-cols-2">
+				<ProductItemImage product={product} />
+				<div className="flex flex-col gap-2">
+					<Heading title={product.name} />
+					<ProductItemCategory product={product} />
+					<ProductItemPrice product={product} />
+					<ProductItemCounter />
 				</div>
 			</div>
+			{relatedProsucts.length > 0 && (
+				<div className="mt-8" data-testid="related-products">
+					<div className="mb-5 text-center">
+						<Heading tag="h2" title="Related Products" />
+					</div>
+					<ProductItemsList products={relatedProsucts} />
+				</div>
+			)}
 		</>
 	);
 }

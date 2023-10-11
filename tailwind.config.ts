@@ -10,7 +10,6 @@ const config: Config = {
 	theme: {
 		fontFamily: {
 			sans: ['Poppins', ...DefaultTheme.fontFamily.sans],
-			heading: ['Martel Sans', ...DefaultTheme.fontFamily.sans],
 		},
 		extend: {
 			backgroundImage: {
