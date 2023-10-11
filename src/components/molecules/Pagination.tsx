@@ -27,7 +27,7 @@ export const Pagination = (props: PaginationProps) => {
 			<ul className="mt-8 flex flex-wrap justify-center">
 				{pages.map((page) => (
 					<li key={page} className="mx-2">
-						<ActiveLink href={`${url}${page}` as Route} name={page.toString()} />
+						<ActiveLink href={`${url}${page}` as Route} name={page.toString()} exact={true} />
 					</li>
 				))}
 			</ul>

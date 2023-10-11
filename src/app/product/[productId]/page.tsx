@@ -49,6 +49,7 @@ export default async function ProductPage({ params }: ProductPageParams) {
 					<ProductItemCategory product={product} />
 					<ProductItemPrice product={product} />
 					<ProductItemCounter />
+					<span>{product.description}</span>
 				</div>
 			</div>
 			{relatedProsucts.length > 0 && (
