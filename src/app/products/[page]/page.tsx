@@ -1,33 +1,36 @@
 import { type Metadata } from 'next';
-import { type ProductsPageParams } from './type';
-import { getProducts } from '@api/products';
-import { ProductItemsList } from '@components/organisms';
-import { Pagination } from '@components/molecules';
+import { notFound } from 'next/navigation';
+import { getProductsList } from '@/api/products';
+import { ProductItemsList } from '@/components/organisms/ProductItemsList';
+import { Pagination } from '@/components/molecules/Pagination';
+import { PageTitle } from '@/components/molecules/PageTitle';
 
-const itemsPerPage = 8;
-
-export const metadata: Metadata = {
-	title: 'Products - Next13masters',
+type ProductsPageParams = {
+	params: {
+		page: string;
+	};
 };
 
-export async function generateStaticParams() {
-	const products = await getProducts();
-	const pagesCount = Math.ceil(products.length / itemsPerPage);
-	const pages = Array.from({ length: pagesCount }, (_, i) => i + 1);
-
-	return pages.map((page) => ({ page: page.toString() }));
-}
+export const metadata: Metadata = {
+	title: 'All products - Next13masters',
+};
 
 export default async function ProductsPage({ params }: ProductsPageParams) {
-	const currentPage = parseInt(params.page);
-	const totalProducts = await getProducts();
-	const startIndex = (currentPage - 1) * itemsPerPage;
-	const products = totalProducts.slice(startIndex, startIndex + itemsPerPage);
+	const { page } = params;
+	const first = Number(process.env.PRODUCT_PER_PAGE) || 10;
+	const skip = (Number(page) - 1) * first;
+	const response = await getProductsList({ first, skip });
+	const { products, productsConnection } = response;
+
+	if (!products) return notFound();
+
+	const totalItems = productsConnection.pageInfo.pageSize || 0;
 
 	return (
 		<>
+			<PageTitle title="All products" />
 			<ProductItemsList products={products} />
-			<Pagination itemsPerPage={itemsPerPage} totalItems={totalProducts.length} />
+			<Pagination itemsPerPage={first} totalItems={totalItems} />
 		</>
 	);
 }

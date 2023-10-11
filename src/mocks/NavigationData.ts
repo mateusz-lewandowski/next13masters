@@ -5,14 +5,18 @@ export const NavigationData = [
 	},
 	{
 		name: 'All',
-		href: '/products',
+		href: '/products/1',
 	},
 	{
-		name: 'About Us',
-		href: '/about-us',
+		name: 'T-shirts',
+		href: '/categories/t-shirts/1',
 	},
 	{
-		name: 'Contact',
-		href: '/contact',
+		name: 'Hoodies',
+		href: '/categories/hoodies/1',
+	},
+	{
+		name: 'Accessories',
+		href: '/categories/accessories/1',
 	},
 ];

@@ -1,42 +1,63 @@
-type ProductsResponse = {
-	id: string;
-	title: string;
-	price: number;
-	description: string;
-	category: string;
-	rating: {
-		rate: number;
-		count: number;
-	};
-	image: string;
-	longDescription: string;
+import { notFound } from 'next/navigation';
+import { ExecutiveGraphql } from '@/utils/ExecutiveGraphql';
+import {
+	ProductGetByIdDocument,
+	ProductsGetByCategorySlugDocument,
+	ProductsGetListDocument,
+	ProductsGetByCollectionSlugDocument,
+} from '@/gql/graphql';
+
+export const getProductsList = async (params: {
+	query?: string;
+	first?: number;
+	skip?: number;
+}) => {
+	const { products, productsConnection } = await ExecutiveGraphql(ProductsGetListDocument, {
+		query: params.query || '',
+		first: params.first,
+		skip: params.skip,
+	});
+
+	if (!products && !productsConnection) notFound();
+
+	return { products, productsConnection };
 };
 
-export const getProducts = async () => {
-	const response = await fetch('https://naszsklep-api.vercel.app/api/products?take=20');
-	const productsResponse = (await response.json()) as ProductsResponse[];
+export const getProductById = async (params: { productId: string }) => {
+	const { product } = await ExecutiveGraphql(ProductGetByIdDocument, {
+		id: params.productId,
+	});
 
-	return productsResponse.map(productParser);
+	if (!product) notFound();
+
+	return product;
 };
 
-export const getProductById = async (id: ProductsResponse['id']) => {
-	const response = await fetch(`https://naszsklep-api.vercel.app/api/products/${id}`);
-	const productResponse = (await response.json()) as ProductsResponse;
-
-	return productParser(productResponse);
-};
-
-const productParser = (product: ProductsResponse) => {
-	return {
-		id: product.id,
-		name: product.title,
-		category: product.category,
-		price: product.price,
-		image: {
-			alt: product.title,
-			src: product.image,
+export const getProductByCategorySlug = async (params: {
+	slug: string;
+	first?: number;
+	skip?: number;
+}) => {
+	const { categories, productsConnection } = await ExecutiveGraphql(
+		ProductsGetByCategorySlugDocument,
+		{
+			slug: params.slug,
+			first: params.first,
+			skip: params.skip,
 		},
-		description: product.description,
-		longDescription: product.longDescription,
-	};
+	);
+
+	if (!categories && !productsConnection) notFound();
+
+	return { categories, productsConnection };
+};
+
+export const getProductByCollectionSlug = async (params: { slug: string }) => {
+	const { collections } = await ExecutiveGraphql(ProductsGetByCollectionSlugDocument, {
+		slug: params.slug,
+	});
+
+	if (!collections) notFound();
+
+	return collections;
 };

@@ -1,7 +1,7 @@
 import './globals.css';
 import type { Metadata } from 'next';
 import { poppins } from './fonts';
-import { Header } from '@components/organisms';
+import { Header } from '@/components/organisms/Header';
 
 export const metadata: Metadata = {
 	title: 'Next13masters',
