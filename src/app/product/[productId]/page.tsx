@@ -1,25 +1,20 @@
 import { type Metadata } from 'next';
 import { notFound } from 'next/navigation';
+import { type ProductPageParams } from './types';
 import { getProductsList, getProductById } from '@/api/products';
 import { ProductItemImage } from '@/components/atoms/ProductItemImage';
 import { Heading } from '@/components/atoms/Heading';
 import { ProductItemCategory } from '@/components/atoms/ProductItemCategory';
-import { ProductItemCounter } from '@/components/atoms/ProductItemCounter';
 import { ProductItemPrice } from '@/components/atoms/ProductItemPrice';
 import { ProductItemsList } from '@/components/organisms/ProductItemsList';
-
-type ProductPageParams = {
-	params: {
-		productId: string;
-		page: string;
-	};
-};
+import { ProductItemAddToCard } from '@/components/organisms/ProductItemAddToCard';
+import { ProductItemReview } from '@/components/organisms/ProductItemRewiew';
 
 export async function generateMetadata({ params }: ProductPageParams): Promise<Metadata> {
 	const { productId } = params;
 	const product = await getProductById({ productId });
 
-	if (!product) return notFound();
+	if (!product) throw notFound();
 
 	return {
 		title: `${product.name} - Next13masters`,
@@ -38,7 +33,7 @@ export default async function ProductPage({ params }: ProductPageParams) {
 	const product = await getProductById({ productId });
 	const { products: relatedProsucts } = await getProductsList({ first: 4 });
 
-	if (!product) return notFound();
+	if (!product) throw notFound();
 
 	return (
 		<>
@@ -48,10 +43,11 @@ export default async function ProductPage({ params }: ProductPageParams) {
 					<Heading title={product.name} />
 					<ProductItemCategory product={product} />
 					<ProductItemPrice product={product} />
-					<ProductItemCounter />
-					<span>{product.description}</span>
+					<ProductItemAddToCard product={product} />
+					<span className="mt-6">{product.description}</span>
 				</div>
 			</div>
+			<ProductItemReview product={product} />
 			{relatedProsucts.length > 0 && (
 				<div className="mt-8" data-testid="related-products">
 					<div className="mb-5 text-center">

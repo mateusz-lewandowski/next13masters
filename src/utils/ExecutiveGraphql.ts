@@ -1,14 +1,28 @@
 import { type TypedDocumentString } from '@/gql/graphql';
 
+type ExecutiveGraphqlProps<TResult, TVariable> = {
+	query: TypedDocumentString<TResult, TVariable>;
+	variables: TVariable;
+	next?: NextFetchRequestConfig;
+	cache?: RequestCache;
+};
+
 export const ExecutiveGraphql = async <TResult, TVariable>(
-	query: TypedDocumentString<TResult, TVariable>,
-	variables: TVariable,
+	props: ExecutiveGraphqlProps<TResult, TVariable>,
 ): Promise<TResult> => {
+	const { query, variables, next, cache } = props;
+
 	if (!process.env.GRAPHQL_URL) throw TypeError('GRAPHQL_URL is not defined');
+	if (!process.env.HYGRAPH_TOKEN) throw TypeError('HYGRAPH_TOKEN is not defined');
 
 	const res = await fetch(process.env.GRAPHQL_URL, {
 		method: 'POST',
-		headers: { 'Content-Type': 'application/json' },
+		headers: {
+			Authorization: `Bearer ${process.env.HYGRAPH_TOKEN}`,
+			'Content-Type': 'application/json',
+		},
+		next,
+		cache,
 		body: JSON.stringify({ query, variables }),
 	});
 
@@ -18,7 +32,10 @@ export const ExecutiveGraphql = async <TResult, TVariable>(
 
 	const graphglResponse = (await res.json()) as GraphQLResponse<TResult>;
 
-	if (graphglResponse.errors) throw TypeError(`GraphQL Error`, { cause: graphglResponse.errors });
+	if (graphglResponse.errors) {
+		console.log(graphglResponse.errors);
+		throw TypeError(`GraphQL Error`, { cause: graphglResponse.errors });
+	}
 
 	return graphglResponse.data;
 };

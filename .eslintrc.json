@@ -70,11 +70,22 @@
 			"error",
 			{ "allowNumber": true, "allowBoolean": true }
 		],
+
 		"@typescript-eslint/no-restricted-imports": [
 			"error",
 			{
 				"name": "next/router",
 				"message": "Please use `next/navigation instead`."
+			}
+		],
+
+		// Server Actions `action={…}`
+		"@typescript-eslint/no-misused-promises": [
+			"error",
+			{
+				"checksVoidReturn": {
+					"attributes": false
+				}
 			}
 		]
 	},
@@ -83,6 +94,12 @@
 			"files": ["src/app/**/*.ts?(x)", "tailwind.config.ts"],
 			"rules": {
 				"import/no-default-export": "off"
+			}
+		},
+		{
+			"files": ["opengraph-image.tsx"],
+			"rules": {
+				"@next/next/no-img-element": "off"
 			}
 		}
 	],

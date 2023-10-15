@@ -17,6 +17,7 @@ export const ProductItemTile = (props: { product: ProductItemFragment }) => {
 						<Heading tag="h3" title={product.name} />
 						<ProductItemCategory product={product} />
 						<ProductItemPrice product={product} />
+						<div data-testid="product-rating">{product.averageRating || 0}/5</div>
 					</div>
 				</article>
 			</Link>

@@ -17,7 +17,7 @@ export const generateMetadata = async ({ params }: CategoriesPageParams): Promis
 	const response = await getProductByCategorySlug({ slug });
 	const { categories } = response;
 
-	if (!categories[0]) return notFound();
+	if (!categories[0]) throw notFound();
 
 	return {
 		title: `Next13masters - ${categories[0].name}`,
@@ -32,7 +32,7 @@ export default async function CategoriesPage({ params }: CategoriesPageParams) {
 	const response = await getProductByCategorySlug({ slug, first, skip });
 	const { categories, productsConnection } = response;
 
-	if (!categories[0]) return notFound();
+	if (!categories[0]) throw notFound();
 
 	const product = categories[0].products;
 	const totalItems = productsConnection.pageInfo.pageSize || 0;

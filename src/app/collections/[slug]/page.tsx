@@ -14,7 +14,7 @@ export const generateMetadata = async ({ params }: CollectionsPageParams): Promi
 	const { slug } = params;
 	const collections = await getProductByCollectionSlug({ slug });
 
-	if (!collections[0]) return notFound();
+	if (!collections[0]) throw notFound();
 
 	return {
 		title: `Next13masters - Collection: ${collections[0].name}`,
@@ -26,7 +26,7 @@ export default async function CollectionsPage({ params }: CollectionsPageParams)
 	const { slug } = params;
 	const collections = await getProductByCollectionSlug({ slug });
 
-	if (!collections[0]) return notFound();
+	if (!collections[0]) throw notFound();
 
 	const product = collections[0].products;
 

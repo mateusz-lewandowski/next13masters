@@ -1,5 +1,5 @@
-query ProductsGetList($first: Int, $skip: Int, $query: String) {
-	products(where: { name_contains: $query }, first: $first, skip: $skip) {
+query ProductsGetList($first: Int, $skip: Int, $query: String, $orderBy: ProductOrderByInput ) {
+	products(where: { name_contains: $query }, first: $first, skip: $skip, orderBy: $orderBy) {
 		...ProductItem
 	}
 	productsConnection(where: { name_contains: $query }) {

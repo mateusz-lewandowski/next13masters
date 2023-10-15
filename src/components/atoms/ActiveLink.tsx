@@ -17,7 +17,7 @@ export const ActiveLink = <T extends string>(props: ActiveLinkProps<T>) => {
 	const pathname = usePathname();
 	const path = typeof href === 'string' ? href : href.pathname || '';
 	const isActive = exact || pathname === '/' ? pathname === path : pathname.startsWith(`${path}/`);
-	const linkClass = clsx('border-b-2 px-2 text-gray-950 hover:text-gray-800', {
+	const linkClass = clsx('border-b-2 text-gray-950 hover:text-gray-800', {
 		['border-transparent font-medium']: !isActive,
 		['border-gray-950 font-semibold']: isActive,
 	});
